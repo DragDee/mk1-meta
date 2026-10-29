@@ -1,0 +1,370 @@
+{
+  "source_page": "https://www.mortalkombat.com/en-us/roster",
+  "copyright": "Mortal Kombat artwork © Warner Bros. Entertainment / NetherRealm Studios. Unofficial fan statistics project; no affiliation.",
+  "files": [
+    {
+      "file": "assets/fighters/t-1000-thumb.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/t-1000/thumb.webp"
+    },
+    {
+      "file": "assets/fighters/t-1000-hero.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/t-1000/hero.webp"
+    },
+    {
+      "file": "assets/fighters/conan-thumb.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/conan/thumb.webp"
+    },
+    {
+      "file": "assets/fighters/conan-hero.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/conan/hero.webp"
+    },
+    {
+      "file": "assets/fighters/ghostface-thumb.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/ghostface/thumb.webp"
+    },
+    {
+      "file": "assets/fighters/ghostface-hero.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/ghostface/hero.webp"
+    },
+    {
+      "file": "assets/fighters/noob-saibot-thumb.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/noob-saibot/thumb.webp"
+    },
+    {
+      "file": "assets/fighters/noob-saibot-hero.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/noob-saibot/hero.webp"
+    },
+    {
+      "file": "assets/fighters/cyrax-thumb.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/cyrax/thumb.webp"
+    },
+    {
+      "file": "assets/fighters/cyrax-hero.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/cyrax/hero.webp"
+    },
+    {
+      "file": "assets/fighters/sektor-thumb.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/sektor/thumb.webp"
+    },
+    {
+      "file": "assets/fighters/sektor-hero.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/sektor/hero.webp"
+    },
+    {
+      "file": "assets/fighters/takeda-thumb.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/takeda/thumb.webp"
+    },
+    {
+      "file": "assets/fighters/takeda-hero.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/takeda/hero.webp"
+    },
+    {
+      "file": "assets/fighters/homelander-thumb.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/homelander/thumb.webp"
+    },
+    {
+      "file": "assets/fighters/homelander-hero.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/homelander/hero.webp"
+    },
+    {
+      "file": "assets/fighters/ermac-thumb.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/ermac/thumb.webp"
+    },
+    {
+      "file": "assets/fighters/ermac-hero.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/ermac/hero.webp"
+    },
+    {
+      "file": "assets/fighters/peacemaker-thumb.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/peacemaker/thumb.webp"
+    },
+    {
+      "file": "assets/fighters/peacemaker-hero.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/peacemaker/hero.webp"
+    },
+    {
+      "file": "assets/fighters/quan-chi-thumb.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/quan-chi/thumb.webp"
+    },
+    {
+      "file": "assets/fighters/quan-chi-hero.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/quan-chi/hero.webp"
+    },
+    {
+      "file": "assets/fighters/omni-man-thumb.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/omni-man/thumb.webp"
+    },
+    {
+      "file": "assets/fighters/omni-man-hero.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/omni-man/hero.webp"
+    },
+    {
+      "file": "assets/fighters/reiko-thumb.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/reiko/thumb.webp"
+    },
+    {
+      "file": "assets/fighters/reiko-hero.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/reiko/hero.webp"
+    },
+    {
+      "file": "assets/fighters/shang-tsung-thumb.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/shang-tsung/thumb.webp"
+    },
+    {
+      "file": "assets/fighters/shang-tsung-hero.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/shang-tsung/hero.webp"
+    },
+    {
+      "file": "assets/fighters/nitara-thumb.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/nitara/thumb.webp"
+    },
+    {
+      "file": "assets/fighters/nitara-hero.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/nitara/hero.webp"
+    },
+    {
+      "file": "assets/fighters/shao-kahn-thumb.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/shao-kahn/thumb.webp"
+    },
+    {
+      "file": "assets/fighters/shao-kahn-hero.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/shao-kahn/hero.webp"
+    },
+    {
+      "file": "assets/fighters/sindel-thumb.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/sindel/thumb.webp"
+    },
+    {
+      "file": "assets/fighters/sindel-hero.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/sindel/hero.webp"
+    },
+    {
+      "file": "assets/fighters/ashrah-thumb.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/ashrah/thumb.webp"
+    },
+    {
+      "file": "assets/fighters/ashrah-hero.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/ashrah/hero.webp"
+    },
+    {
+      "file": "assets/fighters/havik-thumb.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/havik/thumb.webp"
+    },
+    {
+      "file": "assets/fighters/havik-hero.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/havik/hero.webp"
+    },
+    {
+      "file": "assets/fighters/reptile-thumb.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/reptile/thumb.webp"
+    },
+    {
+      "file": "assets/fighters/reptile-hero.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/reptile/hero.webp"
+    },
+    {
+      "file": "assets/fighters/geras-thumb.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/geras/thumb.webp"
+    },
+    {
+      "file": "assets/fighters/geras-hero.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/geras/hero.webp"
+    },
+    {
+      "file": "assets/fighters/tanya-thumb.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/tanya/thumb.webp"
+    },
+    {
+      "file": "assets/fighters/tanya-hero.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/tanya/hero.webp"
+    },
+    {
+      "file": "assets/fighters/baraka-thumb.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/baraka/thumb.webp"
+    },
+    {
+      "file": "assets/fighters/baraka-hero.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/baraka/hero.webp"
+    },
+    {
+      "file": "assets/fighters/li-mei-thumb.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/li-mei/thumb.webp"
+    },
+    {
+      "file": "assets/fighters/li-mei-hero.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/li-mei/hero.webp"
+    },
+    {
+      "file": "assets/fighters/smoke-thumb.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/smoke/thumb.webp"
+    },
+    {
+      "file": "assets/fighters/smoke-hero.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/smoke/hero.webp"
+    },
+    {
+      "file": "assets/fighters/rain-thumb.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/rain/thumb.webp"
+    },
+    {
+      "file": "assets/fighters/rain-hero.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/rain/hero.webp"
+    },
+    {
+      "file": "assets/fighters/raiden-thumb.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/raiden/thumb.webp"
+    },
+    {
+      "file": "assets/fighters/raiden-hero.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/raiden/hero.webp"
+    },
+    {
+      "file": "assets/fighters/mileena-thumb.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/mileena/thumb.webp"
+    },
+    {
+      "file": "assets/fighters/mileena-hero.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/mileena/hero.webp"
+    },
+    {
+      "file": "assets/fighters/kung-lao-thumb.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/kung-lao/thumb.webp"
+    },
+    {
+      "file": "assets/fighters/kung-lao-hero.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/kung-lao/hero.webp"
+    },
+    {
+      "file": "assets/fighters/kenshi-takahashi-thumb.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/kenshi-takahashi/thumb.webp"
+    },
+    {
+      "file": "assets/fighters/kenshi-takahashi-hero.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/kenshi-takahashi/hero.webp"
+    },
+    {
+      "file": "assets/fighters/johnny-cage-thumb.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/johnny-cage/thumb.webp"
+    },
+    {
+      "file": "assets/fighters/johnny-cage-hero.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/johnny-cage/hero.webp"
+    },
+    {
+      "file": "assets/fighters/kitana-thumb.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/kitana/thumb.webp"
+    },
+    {
+      "file": "assets/fighters/kitana-hero.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/kitana/hero.webp"
+    },
+    {
+      "file": "assets/fighters/scorpion-thumb.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/scorpion/thumb.webp"
+    },
+    {
+      "file": "assets/fighters/scorpion-hero.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/scorpion/hero.webp"
+    },
+    {
+      "file": "assets/fighters/sub-zero-thumb.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/sub-zero/thumb.webp"
+    },
+    {
+      "file": "assets/fighters/sub-zero-hero.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/sub-zero/hero.webp"
+    },
+    {
+      "file": "assets/fighters/liu-kang-thumb.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/liu-kang/thumb.webp"
+    },
+    {
+      "file": "assets/fighters/liu-kang-hero.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/liu-kang/hero.webp"
+    },
+    {
+      "file": "assets/kameos/sub-zero.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/kameos/sub-zero.webp"
+    },
+    {
+      "file": "assets/kameos/shujinko.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/kameos/shujinko.webp"
+    },
+    {
+      "file": "assets/kameos/scorpion.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/kameos/scorpion.webp"
+    },
+    {
+      "file": "assets/kameos/motaro.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/kameos/motaro.webp"
+    },
+    {
+      "file": "assets/kameos/kung-lao.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/kameos/kung-lao.webp"
+    },
+    {
+      "file": "assets/kameos/cyrax.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/kameos/cyrax.webp"
+    },
+    {
+      "file": "assets/kameos/frost.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/kameos/frost.webp"
+    },
+    {
+      "file": "assets/kameos/goro.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/kameos/goro.webp"
+    },
+    {
+      "file": "assets/kameos/jax.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/kameos/jax.webp"
+    },
+    {
+      "file": "assets/kameos/kano.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/kameos/kano.webp"
+    },
+    {
+      "file": "assets/kameos/darrius.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/kameos/darrius.webp"
+    },
+    {
+      "file": "assets/kameos/sareena.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/kameos/sareena.webp"
+    },
+    {
+      "file": "assets/kameos/sektor.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/kameos/sektor.webp"
+    },
+    {
+      "file": "assets/kameos/sonya.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/kameos/sonya.webp"
+    },
+    {
+      "file": "assets/kameos/stryker.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/kameos/stryker.webp"
+    },
+    {
+      "file": "assets/kameos/tremor.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/kameos/tremor.webp"
+    },
+    {
+      "file": "assets/kameos/khameleon.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/kameos/khameleon.webp"
+    },
+    {
+      "file": "assets/kameos/janet-cage.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/kameos/janet-cage.webp"
+    },
+    {
+      "file": "assets/kameos/mavado.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/kameos/mavado.webp"
+    },
+    {
+      "file": "assets/kameos/ferra.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/kameos/ferra.webp"
+    },
+    {
+      "file": "assets/kameos/madam-bo.webp",
+      "url": "https://cdn-mk1.mortalkombat.com/roster/kameos/madam-bo.webp"
+    }
+  ]
+}

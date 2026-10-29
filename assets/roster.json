@@ -1,0 +1,350 @@
+[
+  {
+    "id": "t-1000",
+    "name": "T-1000",
+    "categories": [
+      "expansion",
+      "kollection",
+      "definitive",
+      "all"
+    ]
+  },
+  {
+    "id": "conan",
+    "name": "CONAN THE BARBARIAN",
+    "categories": [
+      "expansion",
+      "kollection",
+      "definitive",
+      "all"
+    ]
+  },
+  {
+    "id": "ghostface",
+    "name": "GHOST FACE",
+    "categories": [
+      "expansion",
+      "kollection",
+      "definitive",
+      "all"
+    ]
+  },
+  {
+    "id": "noob-saibot",
+    "name": "NOOB SAIBOT",
+    "categories": [
+      "expansion",
+      "kollection",
+      "definitive",
+      "all"
+    ]
+  },
+  {
+    "id": "cyrax",
+    "name": "CYRAX",
+    "categories": [
+      "expansion",
+      "kollection",
+      "definitive",
+      "all"
+    ]
+  },
+  {
+    "id": "sektor",
+    "name": "SEKTOR",
+    "categories": [
+      "expansion",
+      "kollection",
+      "definitive",
+      "all"
+    ]
+  },
+  {
+    "id": "takeda",
+    "name": "TAKEDA",
+    "categories": [
+      "kombat-pack",
+      "kollection",
+      "definitive",
+      "all"
+    ]
+  },
+  {
+    "id": "homelander",
+    "name": "HOMELANDER",
+    "categories": [
+      "kombat-pack",
+      "kollection",
+      "definitive",
+      "all"
+    ]
+  },
+  {
+    "id": "ermac",
+    "name": "ERMAC",
+    "categories": [
+      "kombat-pack",
+      "kollection",
+      "definitive",
+      "all"
+    ]
+  },
+  {
+    "id": "peacemaker",
+    "name": "PEACEMAKER",
+    "categories": [
+      "kombat-pack",
+      "kollection",
+      "definitive",
+      "all"
+    ]
+  },
+  {
+    "id": "quan-chi",
+    "name": "QUAN CHI",
+    "categories": [
+      "kombat-pack",
+      "kollection",
+      "definitive",
+      "all"
+    ]
+  },
+  {
+    "id": "omni-man",
+    "name": "OMNI-MAN",
+    "categories": [
+      "kombat-pack",
+      "kollection",
+      "definitive",
+      "all"
+    ]
+  },
+  {
+    "id": "reiko",
+    "name": "REIKO",
+    "categories": [
+      "base",
+      "kollection",
+      "definitive",
+      "all"
+    ]
+  },
+  {
+    "id": "shang-tsung",
+    "name": "SHANG TSUNG",
+    "categories": [
+      "definitive",
+      "all"
+    ]
+  },
+  {
+    "id": "nitara",
+    "name": "NITARA",
+    "categories": [
+      "base",
+      "kollection",
+      "definitive",
+      "all"
+    ]
+  },
+  {
+    "id": "shao-kahn",
+    "name": "GENERAL SHAO",
+    "categories": [
+      "base",
+      "kollection",
+      "definitive",
+      "all"
+    ]
+  },
+  {
+    "id": "sindel",
+    "name": "SINDEL",
+    "categories": [
+      "base",
+      "kollection",
+      "definitive",
+      "all"
+    ]
+  },
+  {
+    "id": "ashrah",
+    "name": "ASHRAH",
+    "categories": [
+      "base",
+      "kollection",
+      "definitive",
+      "all"
+    ]
+  },
+  {
+    "id": "havik",
+    "name": "HAVIK",
+    "categories": [
+      "base",
+      "kollection",
+      "definitive",
+      "all"
+    ]
+  },
+  {
+    "id": "reptile",
+    "name": "REPTILE",
+    "categories": [
+      "base",
+      "kollection",
+      "definitive",
+      "all"
+    ]
+  },
+  {
+    "id": "geras",
+    "name": "GERAS",
+    "categories": [
+      "base",
+      "kollection",
+      "definitive",
+      "all"
+    ]
+  },
+  {
+    "id": "tanya",
+    "name": "TANYA",
+    "categories": [
+      "base",
+      "kollection",
+      "definitive",
+      "all"
+    ]
+  },
+  {
+    "id": "baraka",
+    "name": "BARAKA",
+    "categories": [
+      "base",
+      "kollection",
+      "definitive",
+      "all"
+    ]
+  },
+  {
+    "id": "li-mei",
+    "name": "LI MEI",
+    "categories": [
+      "base",
+      "kollection",
+      "definitive",
+      "all"
+    ]
+  },
+  {
+    "id": "smoke",
+    "name": "SMOKE",
+    "categories": [
+      "base",
+      "kollection",
+      "definitive",
+      "all"
+    ]
+  },
+  {
+    "id": "rain",
+    "name": "RAIN",
+    "categories": [
+      "base",
+      "kollection",
+      "definitive",
+      "all"
+    ]
+  },
+  {
+    "id": "raiden",
+    "name": "RAIDEN",
+    "categories": [
+      "base",
+      "kollection",
+      "definitive",
+      "all"
+    ]
+  },
+  {
+    "id": "mileena",
+    "name": "MILEENA",
+    "categories": [
+      "base",
+      "kollection",
+      "definitive",
+      "all"
+    ]
+  },
+  {
+    "id": "kung-lao",
+    "name": "KUNG LAO",
+    "categories": [
+      "base",
+      "kollection",
+      "definitive",
+      "all"
+    ]
+  },
+  {
+    "id": "kenshi-takahashi",
+    "name": "KENSHI TAKAHASHI",
+    "categories": [
+      "base",
+      "kollection",
+      "definitive",
+      "all"
+    ]
+  },
+  {
+    "id": "johnny-cage",
+    "name": "JOHNNY CAGE",
+    "categories": [
+      "base",
+      "kollection",
+      "definitive",
+      "all"
+    ]
+  },
+  {
+    "id": "kitana",
+    "name": "KITANA",
+    "categories": [
+      "base",
+      "kollection",
+      "definitive",
+      "all"
+    ]
+  },
+  {
+    "id": "scorpion",
+    "name": "SCORPION",
+    "categories": [
+      "base",
+      "kollection",
+      "definitive",
+      "all"
+    ]
+  },
+  {
+    "id": "sub-zero",
+    "name": "SUB-ZERO",
+    "categories": [
+      "base",
+      "kollection",
+      "definitive",
+      "all"
+    ]
+  },
+  {
+    "id": "liu-kang",
+    "name": "LIU KANG",
+    "categories": [
+      "base",
+      "kollection",
+      "definitive",
+      "all"
+    ]
+  }
+]

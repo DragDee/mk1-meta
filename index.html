@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#101112">
+  <meta name="description" content="MK1 Meta — статистика Комбат Лиги: персонажи, винрейты, популярность, камео и матчапы по публичным ranked-сетам.">
+  <title>MK1 META — Знай свой следующий ход</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">К содержимому</a>
+  <aside class="sidebar">
+    <a class="brand" href="#fighters" aria-label="MK1 META — главная"><span class="brand-mark">M<span>K</span></span><span class="brand-word">MK1<span>META<span class="brand-dot">.</span></span></span></a>
+    <span class="sidebar-caption">ТВОЯ ИГРА. ТВОИ ДАННЫЕ.</span>
+    <nav aria-label="Основная навигация">
+      <span class="nav-caption">АНАЛИТИКА</span>
+      <a href="#fighters" class="nav-item active" data-page="fighters"><i data-icon="grid"></i>Персонажи<span class="nav-count">35</span></a>
+      <a href="#matchups" class="nav-item" data-page="matchups"><i data-icon="swords"></i>Матчапы</a>
+      <a href="#kameos" class="nav-item" data-page="kameos"><i data-icon="users"></i>Камео</a>
+      <span class="nav-caption second-caption">ПРОЕКТ</span>
+      <button class="nav-item" id="about-button"><i data-icon="info"></i>О данных</button>
+      <a class="nav-item" href="data/stats.json" download="mk1-meta-stats.json"><i data-icon="download"></i>Скачать данные</a>
+    </nav>
+    <div class="sidebar-bottom"><div class="community-label"><span class="status-dot"></span> СОЗДАНО СООБЩЕСТВОМ</div><p>Читай мету.<br>Играй по-своему.</p><span>Неофициальный проект MK1</span><div class="sidebar-bottom-line"></div><span>FINISH WITH KNOWLEDGE.</span></div>
+  </aside>
+
+  <div class="app-shell">
+    <header class="topbar"><div class="breadcrumb">КОМБАТ ЛИГА <span>/</span> <strong id="breadcrumb-current">ПЕРСОНАЖИ</strong></div><div class="topbar-right"><span class="snapshot-label"><span class="status-dot"></span> Снимок данных</span><button class="icon-button" id="help-button" aria-label="Как рассчитывается статистика"><i data-icon="info"></i></button><span class="language-label">RU</span></div></header>
+
+    <main id="main">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-glow"></div><img class="hero-dragon" src="assets/dragon.webp" alt="">
+        <div class="hero-copy"><div class="eyebrow"><span class="tiny-line"></span> MORTAL KOMBAT 1 · META ANALYTICS</div><h1 id="hero-title">ЗНАЙ СВОЙ<br>СЛЕДУЮЩИЙ <span>ХОД.</span></h1><p>Каждый матч рассказывает историю.<br>Найди своё преимущество в данных.</p><a class="primary-button" href="#fighters">Выбрать бойца <i data-icon="arrow"></i></a></div>
+        <div class="hero-art"><span class="hero-vertical">GET OVER HERE.</span><img src="assets/fighters/scorpion-hero.webp" alt="Скорпион из Mortal Kombat 1" fetchpriority="high"><div class="hero-fighter-label"><span>ЛИН КУЭЙ / ШИРАЙ РЮ</span><strong>SCORPION</strong><span class="hero-fighter-line"></span></div></div>
+        <div class="hero-corner">01 — ЗНАНИЕ ДАЁТ ПРЕИМУЩЕСТВО</div>
+      </section>
+
+      <section class="summary" aria-label="Обзор выборки"><div class="summary-item"><span class="summary-icon"><i data-icon="swords"></i></span><div><span class="metric-caption">СЕТОВ В АНАЛИЗЕ</span><strong id="total-sets">—</strong></div><span class="metric-note">публичные ranked</span></div><div class="summary-item"><span class="summary-icon"><i data-icon="users"></i></span><div><span class="metric-caption">УНИКАЛЬНЫХ ИГРОКОВ</span><strong id="total-players">—</strong></div><span class="metric-note">в нашей выборке</span></div><div class="summary-item"><span class="summary-icon"><i data-icon="trophy"></i></span><div><span class="metric-caption">УРОВЕНЬ ВЫБОРКИ</span><strong class="rank-metric">ПОЛУБОГ +</strong></div><span class="metric-note">ранг при сборе</span></div></section>
+
+      <section class="workspace" aria-labelledby="section-title">
+        <div class="section-heading"><div><div class="eyebrow section-eyebrow" id="section-eyebrow">РОСТЕР / THE FIGHTERS</div><h2 id="section-title">Найди своего бойца<span>.</span></h2><p id="section-description">Изучай персонажей. Сравнивай цифры. Выбирай свой стиль.</p></div><label class="period-control"><i data-icon="calendar"></i><select id="period" aria-label="Период статистики"><option value="all">Весь период</option><option value="7">Последние 7 дней</option><option value="14">Последние 14 дней</option></select></label></div>
+
+        <div id="fighters-panel">
+          <div class="filters"><div class="filter-tabs" role="group" aria-label="Категория персонажей"><button class="filter-tab selected" data-category="all" aria-pressed="true">Все бойцы <span>35</span></button><button class="filter-tab" data-category="base" aria-pressed="false">Основной ростер</button><button class="filter-tab" data-category="dlc" aria-pressed="false">DLC</button><button class="filter-tab" data-category="favorites" aria-label="Избранные персонажи" aria-pressed="false"><i data-icon="star"></i></button></div><div class="filter-actions"><label class="search-box"><i data-icon="search"></i><input id="search" type="search" placeholder="Найти персонажа…" aria-label="Найти персонажа"><kbd>/</kbd></label><button class="icon-button view-button selected" data-view="grid" aria-label="Показать карточки" aria-pressed="true"><i data-icon="grid"></i></button><button class="icon-button view-button" data-view="table" aria-label="Показать таблицу" aria-pressed="false"><i data-icon="list"></i></button></div></div>
+          <div class="results-toolbar"><span id="results-count" role="status" aria-live="polite">Загружаем ростер…</span><label>Сортировать: <select id="sort" aria-label="Сортировка"><option value="popularity">по популярности</option><option value="winrate">по фактическому винрейту</option><option value="weighted">по взвешенному винрейту</option><option value="name">по имени</option></select></label></div>
+          <div id="fighter-grid" class="fighter-grid" aria-live="polite"></div><div id="fighter-table" class="table-wrap" hidden></div><div id="empty-state" class="empty-state" hidden><i data-icon="search"></i><h3>Боец не найден</h3><p>Попробуй другое имя или измени категорию.</p><button id="reset-filters" class="secondary-button">Сбросить фильтры</button></div>
+        </div>
+
+        <div id="matchups-panel" hidden><div class="matchup-controls"><label>Твой боец<select id="matchup-own" aria-label="Твой боец"></select></label><span class="versus">VS</span><label>Соперник<select id="matchup-opponent" aria-label="Соперник"></select></label></div><div id="matchup-result"></div></div>
+        <div id="kameos-panel" hidden><div id="kameo-grid" class="kameo-grid"></div></div>
+        <div id="error-state" class="empty-state" hidden><h3>Не удалось загрузить данные</h3><p>Обнови страницу или открой сайт через локальный сервер.</p><button class="secondary-button" id="retry-button">Повторить</button></div>
+      </section>
+
+      <div class="data-footnote"><i data-icon="info"></i><p>Статистика описывает собранную выборку, а не всю Комбат Лигу. Единица анализа — сет. Ранг подтверждён на момент сбора.</p><button id="method-button">Как это работает <span>↗</span></button></div>
+      <footer><a class="footer-logo" href="#fighters">MK1 META<span>.</span></a><span>Независимая аналитика. Общая страсть к игре.</span><span id="updated-at">Загрузка снимка…</span></footer>
+    </main>
+  </div>
+
+  <dialog id="fighter-dialog" aria-labelledby="dialog-title"><button class="dialog-close icon-button" aria-label="Закрыть карточку"><i data-icon="close"></i></button><div id="fighter-detail"></div></dialog>
+  <dialog id="about-dialog" aria-labelledby="about-title"><button class="dialog-close icon-button" aria-label="Закрыть описание"><i data-icon="close"></i></button><div class="about-content"><div class="eyebrow">ДАННЫЕ / METHODOLOGY</div><h2 id="about-title">За каждой цифрой — сет<span>.</span></h2><p>Это независимый проект о мете Mortal Kombat 1. Источник — завершённые публичные ranked-сеты из историй игроков, найденных в MMR-таблице.</p><div class="method-grid"><article><span>01</span><h3>Кто попадает в выборку</h3><p>Хотя бы один участник имел ранг Полубог, Бог или Старший бог на момент сбора в выбранном сезоне. Исторический ранг на момент боя не установлен.</p></article><article><span>02</span><h3>Что считается победой</h3><p>Одна запись — один сет, а не отдельный раунд. Одиночное отключение засчитывается как поражение. Спорные результаты и записи с флагами качества исключены.</p></article><article><span>03</span><h3>Винрейт и популярность</h3><p>Винрейт — победы / участия в сетах. Популярность — доля участий бойца от общего числа участий. В зеркальном сете учитываются обе стороны. Взвешенный винрейт — сумма оценок отдельных матчапов с весами по популярности соперников. Для каждого незеркального матчапа используется сглаживание (победы + 1) / (сеты + 2); для зеркала — 50%. Если встреч нет, используется нейтральная оценка 50%. Покрытие показывает долю популярности соперников с известными матчапами, включая зеркало. 95% интервал — условный байесовский интервал при фиксированной популярности и независимых результатах; повторные встречи и смещение выборки не исправлены.</p></article><article><span>04</span><h3>Границы выводов</h3><p>Выборка не случайная. Повторные встречи одних игроков зависимы. Показатели не доказывают силу персонажа; при числе сетов меньше 30 показывается пометка о малой выборке.</p></article></div><p class="method-small">Фильтры 7 и 14 дней отсчитываются от момента подготовки снимка, по UTC. Данные обновляются после локального сбора и экспорта.</p><div class="asset-credit">Иллюстрации: <a href="https://www.mortalkombat.com/en-us/roster" target="_blank" rel="noopener noreferrer">официальный ростер Mortal Kombat 1 ↗</a>. Mortal Kombat © Warner Bros. Entertainment / NetherRealm Studios. Неофициальный фанатский проект.</div></div></dialog>
+</body>
+</html>
