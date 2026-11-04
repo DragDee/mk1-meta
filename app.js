@@ -65,6 +65,7 @@ const byId = Object.fromEntries(catalog.map(f => [f.id,f]));
 const kameoCatalog = {
  SubZeroKAM:['sub-zero','SUB-ZERO'], ShujinkoKAM:['shujinko','SHUJINKO'], ScorpionKAM:['scorpion','SCORPION'], MotaroKAM:['motaro','MOTARO'], KungLaoKAM:['kung-lao','KUNG LAO'], CyraxKAM:['cyrax','CYRAX'], FrostKAM:['frost','FROST'], GoroKAM:['goro','GORO'], JaxKAM:['jax','JAX'], KanoKAM:['kano','KANO'], DarriusKAM:['darrius','DARRIUS'], SareenaKAM:['sareena','SAREENA'], SektorKAM:['sektor','SEKTOR'], SonyaKAM:['sonya','SONYA'], StrykerKAM:['stryker','STRYKER'], TremorKAM:['tremor','TREMOR'], KhameleonKAM:['khameleon','KHAMELEON'], JanetCageKAM:['janet-cage','JANET CAGE'], MavadoKAM:['mavado','MAVADO'], FerraKAM:['ferra','FERRA'], MadamBoKAM:['madam-bo','MADAM BO']
 };
+const kameoName = id => kameoCatalog[id]?.[1] || id.replace(/KAM$/, '');
 
 let snapshot = null;
 let category = 'all';
@@ -121,11 +122,29 @@ function renderWeightedDetail(s) {
  return `<section class="weighted-explanation" aria-label="Подробности взвешенного винрейта"><h3>Против случайного соперника</h3><p>Результаты матчапов взвешены по популярности соперников в выбранном периоде. Малые выборки сглажены; зеркало всегда даёт 50%.</p><div class="weighted-confidence"><div><span>Покрытие по популярности</span><strong>${percent(s.coverage)}</strong></div><div><span>Условный 95% интервал</span><strong>${intervalText(s.conditional_credible_95)}</strong></div></div>${s.unknown_matchup_mass>0.000001?`<p class="coverage-warning">Для ${percent(s.unknown_matchup_mass)} популярности соперников встреч нет: использована нейтральная оценка 50%. Границы влияния неизвестных матчапов: ${intervalText(s.missing_data_bounds)}.</p>`:''}<p class="weighted-caveat">Интервал учитывает неопределённость модели, но не исправляет смещение выборки и зависимость повторных встреч одних игроков.</p></section>`;
 }
 
+function renderFighterKameos(id) {
+ const data = currentView().fighter_kameos?.[id];
+ if (!data) return '<h3>Камео</h3><p class="matchup-caption">Нет данных о камео в выбранном периоде.</p>';
+ const rows = Object.entries(data.kameos).sort((a,b)=>b[1].game_share-a[1].game_share||b[1].popularity-a[1].popularity||kameoName(a[0]).localeCompare(kameoName(b[0])));
+ return `<h3>Камео</h3><div class="table-wrap kameo-table"><table><thead><tr><th>КАМЕО</th><th>ДОЛЯ ИГР</th><th>ДОЛЯ ИГРОКОВ</th><th>ВИНРЕЙТ</th><th>СЕТОВ</th><th>ИГРОКОВ</th></tr></thead><tbody>${rows.map(([kameo,s])=>{
+  const entry = kameoCatalog[kameo], rate = s.display_win_rate;
+  return `<tr><td><span class="kameo-cell">${entry?`<img src="assets/kameos/${entry[0]}.webp" alt="" loading="lazy" width="108" height="108">`:''}${escapeHtml(kameoName(kameo))}</span></td><td>${percent(s.game_share)}</td><td>${percent(s.popularity)}</td><td class="${tone(rate)}"${rate===null&&s.sets?` title="Малая выборка: нужно ещё ${number(s.sets_needed)} сетов"`:''}>${percent(rate)}${rate===null&&s.sets?' <small>мало данных</small>':''}</td><td>${number(s.sets)}</td><td>${number(s.players)}</td></tr>`;
+ }).join('')}</tbody></table></div><p class="kameo-table-note">Доля игр — какую часть всех игр этого бойца сыграли с этим камео, в сумме 100%; сильнее учитывает активных игроков. Доля игроков — сколько из ${number(data.players)} игроков на этом бойце брали камео хотя бы раз; игрок может менять камео, поэтому сумма бывает больше 100%. Винрейт связки показывается от ${number(snapshot.team_min_sets)} сетов.</p>`;
+}
+
+function renderOpponents(id) {
+ const rows = catalog.filter(other => other.id !== id).map(other => {
+  const s = currentView().pairs[id+':'+other.id];
+  return {f:other, s, rate:s ? winrate(s) : null};
+ }).sort((a,b)=>(a.rate===null)-(b.rate===null)||b.rate-a.rate||(b.s?.sets||0)-(a.s?.sets||0)||a.f.ru.localeCompare(b.f.ru,'ru'));
+ if (!rows.some(p => p.s)) return '<h3>Винрейт против соперников</h3><p class="matchup-caption">Нет встреч в выбранном периоде.</p>';
+ return `<h3>Винрейт против соперников</h3><div class="detail-matchups">${rows.map(p=>`<div class="detail-matchup-row"><img src="${imageFor(p.f)}" alt="" loading="lazy"><span>${p.f.ru}${p.s&&p.s.sets<30?' <small>мало данных</small>':''}</span><strong class="${tone(p.rate)}">${percent(p.rate)}</strong><span>${p.s?number(p.s.sets)+' сетов':'нет встреч'}</span></div>`).join('')}</div><p class="kameo-table-note">Все соперники, от лучшего матчапа к худшему. Зеркало не показано: в нём всегда 50%.</p>`;
+}
+
 function openFighter(id) {
  const f = byId[id]; if (!f || !snapshot) return;
  const s = statsFor(id), rate = winrate(s);
- const opponents = catalog.filter(other => other.id !== id).map(other => ({f:other,s:currentView().pairs[id+':'+other.id]})).filter(p => p.s).sort((a,b)=>b.s.sets-a.s.sets).slice(0,6);
- $('fighter-detail').innerHTML = `<div class="detail-hero" style="--fighter-color:${f.color}"><img src="${heroFor(f)}" alt="${f.ru}"><div><span class="eyebrow">${f.faction.toUpperCase()} / ${f.base ? 'BASE ROSTER' : 'DLC'}</span><h2 id="dialog-title">${f.name}</h2><p>${f.ru}</p></div></div><div class="detail-content"><div class="detail-metrics"><div><span class="stat-label">ФАКТИЧЕСКИЙ ВИНРЕЙТ</span><strong class="${tone(rate)}">${percent(rate)}</strong></div><div title="${weightedTitle(s)}"><span class="stat-label">ВЗВЕШЕННЫЙ ВИНРЕЙТ</span><strong class="${tone(weightedRate(s))}">${percent(weightedRate(s))}</strong></div><div><span class="stat-label">УЧАСТИЙ В СЕТАХ</span><strong>${number(s.appearances)}</strong></div><div><span class="stat-label">ИГРОКОВ</span><strong>${number(s.players)}</strong></div></div>${renderWeightedDetail(s)}<h3>Частые соперники</h3><div class="detail-matchups">${opponents.length ? opponents.map(p=>`<div class="detail-matchup-row"><img src="${imageFor(p.f)}" alt=""><span>${p.f.ru}</span><strong class="${tone(winrate(p.s))}">${percent(winrate(p.s))}</strong><span>${number(p.s.sets)} сетов</span></div>`).join('') : '<p class="matchup-caption">Нет встреч в выбранном периоде.</p>'}</div>${s.appearances<30?'<p class="detail-note">Малая выборка: менее 30 участий. Этот винрейт пока не позволяет уверенно судить о результатах бойца.</p>':''}<button class="secondary-button detail-cta" data-compare="${id}">Сравнить с другим бойцом ${icon('arrow')}</button></div>`;
+ $('fighter-detail').innerHTML = `<div class="detail-hero" style="--fighter-color:${f.color}"><img src="${heroFor(f)}" alt="${f.ru}"><div><span class="eyebrow">${f.faction.toUpperCase()} / ${f.base ? 'BASE ROSTER' : 'DLC'}</span><h2 id="dialog-title">${f.name}</h2><p>${f.ru}</p></div></div><div class="detail-content"><div class="detail-metrics"><div><span class="stat-label">ФАКТИЧЕСКИЙ ВИНРЕЙТ</span><strong class="${tone(rate)}">${percent(rate)}</strong></div><div title="${weightedTitle(s)}"><span class="stat-label">ВЗВЕШЕННЫЙ ВИНРЕЙТ</span><strong class="${tone(weightedRate(s))}">${percent(weightedRate(s))}</strong></div><div><span class="stat-label">УЧАСТИЙ В СЕТАХ</span><strong>${number(s.appearances)}</strong></div><div><span class="stat-label">ИГРОКОВ</span><strong>${number(s.players)}</strong></div></div>${renderWeightedDetail(s)}${renderFighterKameos(id)}${renderOpponents(id)}${s.appearances<30?'<p class="detail-note">Малая выборка: менее 30 участий. Этот винрейт пока не позволяет уверенно судить о результатах бойца.</p>':''}<button class="secondary-button detail-cta" data-compare="${id}">Сравнить с другим бойцом ${icon('arrow')}</button></div>`;
  $('fighter-dialog').showModal();
 }
 
@@ -143,7 +162,7 @@ function renderKameos() {
  const items = Object.entries(currentView().kameos).sort((a,b)=>b[1].appearances-a[1].appearances);
  const total = items.reduce((sum,[,s])=>sum+s.appearances,0);
  $('kameo-grid').innerHTML = items.length ? items.map(([id,s])=>{
-  const entry = kameoCatalog[id], display = entry?.[1] || id.replace(/KAM$/, ''), rate = winrate(s);
+  const entry = kameoCatalog[id], display = kameoName(id), rate = winrate(s);
   return `<article class="kameo-card">${entry?`<img src="assets/kameos/${entry[0]}.webp" alt="${display}" loading="lazy" width="108" height="108">`:''}<div><h3>${escapeHtml(display)}</h3><p>Винрейт <strong class="${tone(rate)}">${percent(rate)}</strong> · популярность ${percent(total?s.appearances/total:null)}</p><p>${number(s.appearances)} участий ${s.appearances<30?'· мало данных':''}</p></div></article>`;
  }).join('') : '<p class="matchup-empty">Нет данных о камео в выбранном периоде.</p>';
 }

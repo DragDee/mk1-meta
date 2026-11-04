@@ -1078,6 +1078,11 @@ dialog::backdrop {
   font-size:12px;
   text-align:right
 }
+.detail-matchup-row small {
+  color:#dfab70;
+  font-size:8px;
+  margin-left:4px
+}
 .detail-note {
   color:#93969c;
   line-height:1.8;
@@ -2011,3 +2016,10 @@ tbody tr:hover {
 @media(max-width:380px) {
   .weighted-confidence { grid-template-columns:1fr; }
 }
+.kameo-table th,.kameo-table td { padding:8px 12px; }
+.kameo-table td:first-child { color:var(--text); font:inherit; font-size:11px; font-weight:600; }
+.kameo-table small { color:#dfab70; font-size:8px; font-weight:400; margin-left:4px; }
+.kameo-cell { display:flex; align-items:center; gap:10px; }
+.kameo-cell img { width:28px; height:28px; border-radius:3px; background:#27292d; }
+.kameo-table-note { color:#858b80; font-size:9px; line-height:1.8; margin:10px 0 28px; }
+@media (max-width:600px) { .kameo-table th,.kameo-table td { padding:8px 6px; } .kameo-table th { white-space:normal; } .kameo-table table { min-width:0; } .kameo-cell { gap:6px; } }
