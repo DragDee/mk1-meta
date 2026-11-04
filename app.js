@@ -67,6 +67,9 @@ const kameoCatalog = {
 };
 const kameoName = id => kameoCatalog[id]?.[1] || id.replace(/KAM$/, '');
 
+const rankLevels = {6:'Полубог', 7:'Бог', 8:'Старший бог'};
+let rankSide = 'any', rankLevel = '6', appliedRankFilter = 'any-6', rankRequest = 0;
+const rankViews = {};
 let snapshot = null;
 let category = 'all';
 let layout = 'grid';
@@ -82,8 +85,52 @@ const tone = rate => rate === null ? '' : rate >= .5 ? 'positive' : 'negative';
 const imageFor = f => `assets/fighters/${f.slug}-thumb.webp`;
 const heroFor = f => `assets/fighters/${f.slug}-hero.webp`;
 
+function renderRankFilter() {
+ const period = $('period').value, id = `${rankSide}-${rankLevel}`, v = currentView();
+ document.querySelectorAll('[data-rank-side]').forEach(b => { const on = b.dataset.rankSide === rankSide; b.classList.toggle('selected', on); b.setAttribute('aria-pressed', on); });
+ document.querySelectorAll('[data-rank-level]').forEach(b => {
+  const on = b.dataset.rankLevel === rankLevel;
+  b.classList.toggle('selected', on); b.setAttribute('aria-pressed', on);
+  b.querySelector('small').textContent = number(snapshot.rank_filters?.[`${rankSide}-${b.dataset.rankLevel}`]?.[period]);
+ });
+ $('rank-metric').textContent = rankLevels[rankLevel].toUpperCase() + ' +';
+ $('rank-metric-note').textContent = rankSide === 'both' ? 'оба игрока' : 'хотя бы один игрок';
+ $('download-link').href = id === snapshot.rank_filter ? 'data/stats.json' : `data/stats-${id}.json`;
+ $('download-link').download = id === snapshot.rank_filter ? 'mk1-meta-stats.json' : `mk1-meta-stats-${id}.json`;
+ const thin = catalog.filter(f => (v.fighters[f.id]?.appearances || 0) < 30).length;
+ const who = rankSide === 'both' ? 'у обоих игроков' : 'хотя бы у одного игрока';
+ $('rank-caption').innerHTML = `Сетов: <strong>${number(v.sets)}</strong>. Ранг ${rankLevels[rankLevel]} или выше подтверждён ${who}.${thin ? ` <span class="rank-warning">У ${thin} из ${catalog.length} бойцов меньше 30 участий: их винрейт ненадёжен.</span>` : ''}`;
+}
+
+async function applyRankFilter() {
+ const id = `${rankSide}-${rankLevel}`, request = ++rankRequest;
+ $('main').setAttribute('aria-busy', 'true');
+ try {
+  if (!rankViews[id]) {
+   const response = await fetch(`data/stats-${id}.json`);
+   if (!response.ok) throw new Error('Rank filter unavailable');
+   const data = await response.json();
+   if (data.generated_at !== snapshot.generated_at) throw new Error('Rank filter belongs to another snapshot');
+   rankViews[id] = data.views;
+  }
+  if (request !== rankRequest) return;
+  snapshot.views = rankViews[id];
+  appliedRankFilter = id;
+  renderSummary(); showPage();
+ } catch (error) {
+  if (request !== rankRequest) return;
+  [rankSide, rankLevel] = appliedRankFilter.split('-');
+  renderSummary();
+  $('rank-caption').innerHTML = '<span class="rank-warning">Не удалось загрузить этот срез. Проверь соединение и попробуй ещё раз.</span>';
+  console.error('MK1 META: failed to load rank filter', error);
+ } finally {
+  if (request === rankRequest) $('main').removeAttribute('aria-busy');
+ }
+}
+
 function renderSummary() {
  const v = currentView();
+ renderRankFilter();
  $('total-sets').textContent = number(v.sets);
  $('total-players').textContent = number(v.players);
  $('updated-at').textContent = 'Снимок: ' + new Date(snapshot.generated_at).toLocaleString('ru-RU',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit',timeZone:'Asia/Dubai'}) + ' GST';
@@ -109,8 +156,8 @@ function renderFighters() {
  $('empty-state').hidden = fighters.length > 0;
  if (layout === 'grid') {
   $('fighter-grid').innerHTML = fighters.map((f,index) => {
-   const s = statsFor(f.id), rate = winrate(s), share = total ? s.appearances / total : null;
-   return `<article class="fighter-card" style="--fighter-color:${f.color}"><button class="favorite-button" data-favorite="${f.id}" aria-label="${favorites.has(f.id) ? 'Убрать из избранного' : 'В избранное'}: ${f.ru}" aria-pressed="${favorites.has(f.id)}">${icon('star')}</button><button class="fighter-main" data-fighter="${f.id}" aria-label="Открыть статистику: ${f.ru}"><div class="fighter-image"><span class="card-index">${String(index+1).padStart(2,'0')}</span><img src="${heroFor(f)}" alt="${f.ru}" loading="${index < 4 ? 'eager' : 'lazy'}" width="1280" height="1280"></div><div class="fighter-identity"><h3>${f.name}</h3><span><span class="color-mark"></span>${f.ru} <span> / </span> ${f.base ? 'Основной ростер' : 'DLC'}</span></div><div class="fighter-stats"><div class="winrate-stat" title="Фактический винрейт: победы / участия в сетах"><span class="stat-label">ФАКТ. ВИНРЕЙТ</span><strong class="stat-value ${tone(rate)}">${percent(rate)}</strong></div><div class="winrate-stat" title="${weightedTitle(s)}"><span class="stat-label">ВЗВЕШ. ВИНРЕЙТ</span><strong class="stat-value ${tone(weightedRate(s))}">${percent(weightedRate(s))}</strong></div><div class="popularity-stat"><span class="stat-label">ПОПУЛЯРНОСТЬ</span><strong class="stat-value">${percent(share)}</strong><div class="pick-bar"><span style="width:${Math.min(100,(share || 0)*1000)}%"></span></div></div></div><div class="card-bottom"><span>${number(s.appearances)} участий ${s.appearances < 30 ? '<small>· мало данных</small>' : ''}</span><span>Статистика ${icon('arrow')}</span></div></button></article>`;
+   const s = statsFor(f.id), share = total ? s.appearances / total : null;
+   return `<article class="fighter-card" style="--fighter-color:${f.color}"><button class="favorite-button" data-favorite="${f.id}" aria-label="${favorites.has(f.id) ? 'Убрать из избранного' : 'В избранное'}: ${f.ru}" aria-pressed="${favorites.has(f.id)}">${icon('star')}</button><button class="fighter-main" data-fighter="${f.id}" aria-label="Открыть статистику: ${f.ru}"><div class="fighter-image"><span class="card-index">${String(index+1).padStart(2,'0')}</span><img src="${heroFor(f)}" alt="${f.ru}" loading="${index < 4 ? 'eager' : 'lazy'}" width="1280" height="1280"></div><div class="fighter-identity"><h3>${f.name}</h3><span><span class="color-mark"></span>${f.ru} <span> / </span> ${f.base ? 'Основной ростер' : 'DLC'}</span></div><div class="fighter-stats"><div class="winrate-stat" title="${weightedTitle(s)}"><span class="stat-label">ВИНРЕЙТ</span><strong class="stat-value ${tone(weightedRate(s))}">${percent(weightedRate(s))}</strong></div><div class="popularity-stat"><span class="stat-label">ПОПУЛЯРНОСТЬ</span><strong class="stat-value">${percent(share)}</strong><div class="pick-bar"><span style="width:${Math.min(100,(share || 0)*1000)}%"></span></div></div></div><div class="card-bottom"><span>${number(s.appearances)} участий ${s.appearances < 30 ? '<small>· мало данных</small>' : ''}</span><span>Статистика ${icon('arrow')}</span></div></button></article>`;
   }).join('');
  } else {
   $('fighter-table').innerHTML = `<table><thead><tr><th>#</th><th>ПЕРСОНАЖ</th><th>ФАКТ. ВИНРЕЙТ</th><th>ВЗВЕШ. ВИНРЕЙТ</th><th>ПОКРЫТИЕ</th><th>ПОПУЛЯРНОСТЬ</th><th>УЧАСТИЙ</th><th>ИГРОКОВ</th></tr></thead><tbody>${fighters.map((f,i) => {const s=statsFor(f.id),rate=winrate(s);return `<tr><td>${String(i+1).padStart(2,'0')}</td><td><button data-fighter="${f.id}" aria-label="Открыть статистику: ${f.ru}"><img src="${imageFor(f)}" alt="" loading="lazy"><strong>${f.name}</strong></button></td><td class="${tone(rate)}">${percent(rate)}</td><td class="${tone(weightedRate(s))}" title="${weightedTitle(s)}">${percent(weightedRate(s))}</td><td>${weightedRate(s)===null?'—':percent(s.coverage)}</td><td>${percent(total?s.appearances/total:null)}</td><td>${number(s.appearances)}</td><td>${number(s.players)}</td></tr>`;}).join('')}</tbody></table>`;
@@ -122,27 +169,71 @@ function renderWeightedDetail(s) {
  return `<section class="weighted-explanation" aria-label="Подробности взвешенного винрейта"><h3>Против случайного соперника</h3><p>Результаты матчапов взвешены по популярности соперников в выбранном периоде. Малые выборки сглажены; зеркало всегда даёт 50%.</p><div class="weighted-confidence"><div><span>Покрытие по популярности</span><strong>${percent(s.coverage)}</strong></div><div><span>Условный 95% интервал</span><strong>${intervalText(s.conditional_credible_95)}</strong></div></div>${s.unknown_matchup_mass>0.000001?`<p class="coverage-warning">Для ${percent(s.unknown_matchup_mass)} популярности соперников встреч нет: использована нейтральная оценка 50%. Границы влияния неизвестных матчапов: ${intervalText(s.missing_data_bounds)}.</p>`:''}<p class="weighted-caveat">Интервал учитывает неопределённость модели, но не исправляет смещение выборки и зависимость повторных встреч одних игроков.</p></section>`;
 }
 
+// Sort choice survives switching fighters; collapsed sections reset on every open.
+const detailSort = {kameos:{key:'game_share',dir:-1}, opponents:{key:'rate',dir:-1}};
+const kameoColumns = [['name','КАМЕО'],['game_share','ДОЛЯ ИГР'],['popularity','ДОЛЯ ИГРОКОВ'],['rate','ВИНРЕЙТ'],['sets','СЕТОВ'],['players','ИГРОКОВ']];
+const opponentColumns = [['name','СОПЕРНИК'],['rate','ВИНРЕЙТ'],['sets','СЕТОВ'],['game_share','ДОЛЯ ИГР'],['popularity','ПОПУЛЯРНОСТЬ'],['players','ИГРОКОВ']];
+let detailFighter = null;
+
+function sortedRows(rows, table) {
+ const {key:field, dir} = detailSort[table];
+ return [...rows].sort((a,b) => {
+  const x = a[field] ?? null, y = b[field] ?? null;
+  if (x === null || y === null) { if (x !== y) return x === null ? 1 : -1; }
+  else if (x !== y) return dir * (typeof x === 'string' ? x.localeCompare(y,'ru') : x - y);
+  return a.name.localeCompare(b.name,'ru');
+ });
+}
+
+function sortableHead(table, columns) {
+ const state = detailSort[table];
+ return `<thead><tr>${columns.map(([field,label]) => {
+  const active = state.key === field;
+  return `<th aria-sort="${active ? (state.dir < 0 ? 'descending' : 'ascending') : 'none'}"><button type="button" class="sort-button${active ? ' active' : ''}" data-sort-table="${table}" data-sort-key="${field}">${label}<span aria-hidden="true">${active ? (state.dir < 0 ? '▼' : '▲') : ''}</span></button></th>`;
+ }).join('')}</tr></thead>`;
+}
+
+const collapsible = (title, count, content) => `<details class="detail-section"><summary><h3>${title}</h3><span class="detail-count">${number(count)}</span><span class="detail-toggle"><span class="when-closed">Показать</span><span class="when-open">Скрыть</span></span></summary>${content}</details>`;
+
+function kameoTable(id) {
+ const data = currentView().fighter_kameos[id];
+ const rows = sortedRows(Object.entries(data.kameos).map(([kameo,s]) => ({...s, kameo, name:kameoName(kameo), rate:s.display_win_rate})), 'kameos');
+ return `<table>${sortableHead('kameos', kameoColumns)}<tbody>${rows.map(s => {
+  const entry = kameoCatalog[s.kameo];
+  return `<tr><td><span class="detail-cell">${entry?`<img src="assets/kameos/${entry[0]}.webp" alt="" loading="lazy" width="108" height="108">`:''}${escapeHtml(s.name)}</span></td><td>${percent(s.game_share)}</td><td>${percent(s.popularity)}</td><td class="${tone(s.rate)}"${s.rate===null&&s.sets?` title="Малая выборка: нужно ещё ${number(s.sets_needed)} сетов"`:''}>${percent(s.rate)}${s.rate===null&&s.sets?' <small>мало данных</small>':''}</td><td>${number(s.sets)}</td><td>${number(s.players)}</td></tr>`;
+ }).join('')}</tbody></table>`;
+}
+
 function renderFighterKameos(id) {
  const data = currentView().fighter_kameos?.[id];
  if (!data) return '<h3>Камео</h3><p class="matchup-caption">Нет данных о камео в выбранном периоде.</p>';
- const rows = Object.entries(data.kameos).sort((a,b)=>b[1].game_share-a[1].game_share||b[1].popularity-a[1].popularity||kameoName(a[0]).localeCompare(kameoName(b[0])));
- return `<h3>Камео</h3><div class="table-wrap kameo-table"><table><thead><tr><th>КАМЕО</th><th>ДОЛЯ ИГР</th><th>ДОЛЯ ИГРОКОВ</th><th>ВИНРЕЙТ</th><th>СЕТОВ</th><th>ИГРОКОВ</th></tr></thead><tbody>${rows.map(([kameo,s])=>{
-  const entry = kameoCatalog[kameo], rate = s.display_win_rate;
-  return `<tr><td><span class="kameo-cell">${entry?`<img src="assets/kameos/${entry[0]}.webp" alt="" loading="lazy" width="108" height="108">`:''}${escapeHtml(kameoName(kameo))}</span></td><td>${percent(s.game_share)}</td><td>${percent(s.popularity)}</td><td class="${tone(rate)}"${rate===null&&s.sets?` title="Малая выборка: нужно ещё ${number(s.sets_needed)} сетов"`:''}>${percent(rate)}${rate===null&&s.sets?' <small>мало данных</small>':''}</td><td>${number(s.sets)}</td><td>${number(s.players)}</td></tr>`;
- }).join('')}</tbody></table></div><p class="kameo-table-note">Доля игр — какую часть всех игр этого бойца сыграли с этим камео, в сумме 100%; сильнее учитывает активных игроков. Доля игроков — сколько из ${number(data.players)} игроков на этом бойце брали камео хотя бы раз; игрок может менять камео, поэтому сумма бывает больше 100%. Винрейт связки показывается от ${number(snapshot.team_min_sets)} сетов.</p>`;
+ return collapsible('Камео', Object.keys(data.kameos).length, `<div class="table-wrap detail-table" id="kameos-table">${kameoTable(id)}</div><p class="detail-table-note">Доля игр — какую часть всех игр этого бойца сыграли с этим камео, в сумме 100%; сильнее учитывает активных игроков. Доля игроков — сколько из ${number(data.players)} игроков на этом бойце брали камео хотя бы раз; игрок может менять камео, поэтому сумма бывает больше 100%. Винрейт связки показывается от ${number(snapshot.team_min_sets)} сетов.</p>`);
+}
+
+function opponentRows(id) {
+ const view = currentView(), picks = view.sets * 2;
+ const rows = catalog.filter(other => other.id !== id).map(other => {
+  const s = view.pairs[id+':'+other.id];
+  return {f:other, name:other.ru, rate:s ? winrate(s) : null, sets:s?.sets || 0, players:s?.players ?? null,
+          popularity:picks ? (view.fighters[other.id]?.appearances || 0) / picks : null};
+ });
+ const sets = rows.reduce((sum,row) => sum + row.sets, 0);
+ return rows.map(row => ({...row, game_share:sets ? row.sets / sets : null}));
+}
+
+function opponentTable(id) {
+ return `<table>${sortableHead('opponents', opponentColumns)}<tbody>${sortedRows(opponentRows(id), 'opponents').map(s => `<tr><td><span class="detail-cell"><img src="${imageFor(s.f)}" alt="" loading="lazy">${s.f.ru}</span></td><td class="${tone(s.rate)}">${percent(s.rate)}${s.sets&&s.sets<30?' <small>мало данных</small>':''}</td><td>${s.sets?number(s.sets):'нет встреч'}</td><td>${percent(s.game_share)}</td><td>${percent(s.popularity)}</td><td>${s.players===null?'—':number(s.players)}</td></tr>`).join('')}</tbody></table>`;
 }
 
 function renderOpponents(id) {
- const rows = catalog.filter(other => other.id !== id).map(other => {
-  const s = currentView().pairs[id+':'+other.id];
-  return {f:other, s, rate:s ? winrate(s) : null};
- }).sort((a,b)=>(a.rate===null)-(b.rate===null)||b.rate-a.rate||(b.s?.sets||0)-(a.s?.sets||0)||a.f.ru.localeCompare(b.f.ru,'ru'));
- if (!rows.some(p => p.s)) return '<h3>Винрейт против соперников</h3><p class="matchup-caption">Нет встреч в выбранном периоде.</p>';
- return `<h3>Винрейт против соперников</h3><div class="detail-matchups">${rows.map(p=>`<div class="detail-matchup-row"><img src="${imageFor(p.f)}" alt="" loading="lazy"><span>${p.f.ru}${p.s&&p.s.sets<30?' <small>мало данных</small>':''}</span><strong class="${tone(p.rate)}">${percent(p.rate)}</strong><span>${p.s?number(p.s.sets)+' сетов':'нет встреч'}</span></div>`).join('')}</div><p class="kameo-table-note">Все соперники, от лучшего матчапа к худшему. Зеркало не показано: в нём всегда 50%.</p>`;
+ const rows = opponentRows(id);
+ if (!rows.some(row => row.sets)) return '<h3>Винрейт против соперников</h3><p class="matchup-caption">Нет встреч в выбранном периоде.</p>';
+ return collapsible('Винрейт против соперников', rows.length, `<div class="table-wrap detail-table" id="opponents-table">${opponentTable(id)}</div><p class="detail-table-note">Доля игр — какую часть игр этого бойца заняли встречи с этим соперником, в сумме 100%. Популярность — доля соперника среди всех выборов бойцов за период. Игроков — сколько игроков на этом бойце встречали соперника. Зеркало не показано: в нём всегда 50%.</p>`);
 }
 
 function openFighter(id) {
  const f = byId[id]; if (!f || !snapshot) return;
+ detailFighter = id;
  const s = statsFor(id), rate = winrate(s);
  $('fighter-detail').innerHTML = `<div class="detail-hero" style="--fighter-color:${f.color}"><img src="${heroFor(f)}" alt="${f.ru}"><div><span class="eyebrow">${f.faction.toUpperCase()} / ${f.base ? 'BASE ROSTER' : 'DLC'}</span><h2 id="dialog-title">${f.name}</h2><p>${f.ru}</p></div></div><div class="detail-content"><div class="detail-metrics"><div><span class="stat-label">ФАКТИЧЕСКИЙ ВИНРЕЙТ</span><strong class="${tone(rate)}">${percent(rate)}</strong></div><div title="${weightedTitle(s)}"><span class="stat-label">ВЗВЕШЕННЫЙ ВИНРЕЙТ</span><strong class="${tone(weightedRate(s))}">${percent(weightedRate(s))}</strong></div><div><span class="stat-label">УЧАСТИЙ В СЕТАХ</span><strong>${number(s.appearances)}</strong></div><div><span class="stat-label">ИГРОКОВ</span><strong>${number(s.players)}</strong></div></div>${renderWeightedDetail(s)}${renderFighterKameos(id)}${renderOpponents(id)}${s.appearances<30?'<p class="detail-note">Малая выборка: менее 30 участий. Этот винрейт пока не позволяет уверенно судить о результатах бойца.</p>':''}<button class="secondary-button detail-cta" data-compare="${id}">Сравнить с другим бойцом ${icon('arrow')}</button></div>`;
  $('fighter-dialog').showModal();
@@ -177,6 +268,14 @@ function showPage() {
 }
 
 document.addEventListener('click', event => {
+ const sort = event.target.closest('[data-sort-table]');
+ if (sort) {
+  const {sortTable:table, sortKey:field} = sort.dataset, state = detailSort[table];
+  if (state.key === field) state.dir = -state.dir; else { state.key = field; state.dir = field === 'name' ? 1 : -1; }
+  $(table+'-table').innerHTML = (table === 'kameos' ? kameoTable : opponentTable)(detailFighter);
+  $(table+'-table').querySelector(`[data-sort-key="${field}"]`).focus();
+  return;
+ }
  const favorite = event.target.closest('[data-favorite]');
  if (favorite) { const id=favorite.dataset.favorite; favorites.has(id)?favorites.delete(id):favorites.add(id);try{localStorage.setItem('mk1-meta-favorites',JSON.stringify([...favorites]));}catch{} renderFighters();return; }
  const fighter = event.target.closest('[data-fighter]'); if(fighter){openFighter(fighter.dataset.fighter);return;}
@@ -186,6 +285,8 @@ document.querySelectorAll('[data-category]').forEach(button=>button.addEventList
 document.querySelectorAll('[data-view]').forEach(button=>button.addEventListener('click',()=>{layout=button.dataset.view;document.querySelectorAll('[data-view]').forEach(b=>{b.classList.toggle('selected',b===button);b.setAttribute('aria-pressed',b===button);});renderFighters();}));
 $('search').addEventListener('input',renderFighters);$('sort').addEventListener('change',renderFighters);
 $('period').addEventListener('change',()=>{if(snapshot){renderSummary();showPage();}});
+document.querySelectorAll('[data-rank-side]').forEach(button=>button.addEventListener('click',()=>{if(snapshot&&rankSide!==button.dataset.rankSide){rankSide=button.dataset.rankSide;renderRankFilter();applyRankFilter();}}));
+document.querySelectorAll('[data-rank-level]').forEach(button=>button.addEventListener('click',()=>{if(snapshot&&rankLevel!==button.dataset.rankLevel){rankLevel=button.dataset.rankLevel;renderRankFilter();applyRankFilter();}}));
 $('reset-filters').addEventListener('click',()=>{$('search').value='';document.querySelector('[data-category="all"]').click();});
 for(const id of ['matchup-own','matchup-opponent']){$(id).innerHTML=catalog.map(f=>`<option value="${f.id}">${f.ru}</option>`).join('');$(id).addEventListener('change',renderMatchup);}$('matchup-own').value='Scorpion';$('matchup-opponent').value='SubZero';
 for(const id of ['about-button','help-button','method-button'])$(id).addEventListener('click',()=>$('about-dialog').showModal());
@@ -202,6 +303,7 @@ async function load() {
   if(!dataResponse.ok||!rosterResponse.ok)throw new Error('Snapshot unavailable');
   const [data,roster]=await Promise.all([dataResponse.json(),rosterResponse.json()]);
   snapshot=data;
+  rankViews[data.rank_filter]=data.views;
   for(const f of catalog)f.base=roster.find(r=>r.id===f.slug)?.categories.includes('base')||false;
   renderSummary();showPage();
  }catch(error){$('fighter-grid').innerHTML='';$('results-count').textContent='Данные недоступны';$('error-state').hidden=false;console.error('MK1 META: failed to load static snapshot',error);}

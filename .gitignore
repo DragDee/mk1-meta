@@ -16,3 +16,4 @@
 !assets/sources.json
 !data/
 !data/stats.json
+!data/stats-*.json
